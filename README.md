@@ -9,3 +9,8 @@ a rune will be appended to the output field above
 and contents of this field will be copied to the clipboard.
 
 If you want to copy the output manually, click it.
+
+
+### Keyboard Shortcuts
+
+- `Escape` - closes the app

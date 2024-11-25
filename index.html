@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+<style>
+
+*{
+    margin: 0;
+    padding: 0;
+
+    color: #eee;
+
+    font-size: 24px;
+}
+
+html,
+body{
+    height: 100%;
+}
+
+body{
+    display: grid;
+    place-content: center;
+
+    background-color: #333;
+}
+
+main{
+    display: grid;
+    gap: .2rem;
+
+    width: auto;
+}
+
+.output-wrapper{
+    display: grid;
+    grid-template-columns: auto min-content;
+    gap: .2rem;
+}
+
+button{
+    padding: .2rem .5rem;
+    background-color: #555;
+
+    outline: none;
+    border: none;
+    border-radius: .2rem;
+
+    transition: all .25s;
+
+    cursor: pointer;
+}
+
+button:hover,
+button:focus-visible{
+    background-color: #666;
+}
+
+button:focus-visible{
+    outline: 1px solid #888;
+}
+
+.output{
+    padding: 1rem, .5rem;
+    background-color: #555;
+
+    display: grid;
+    align-content: center;
+
+    border-radius: .2rem;
+
+    cursor: copy;
+}
+
+.keyboard{
+    display: grid;
+    grid-template-columns: repeat(10, min-content);
+    gap: .2rem;
+}
+
+.keyboard__key{
+    display: grid;
+    place-content: center;
+}
+
+.keyboard__key--long{
+    grid-column: 1 / -1;
+}
+
+</style>
+</head>
+<body>
+
+    <main>
+        <section class="output-wrapper">
+            <p class="output" js-output></p>
+            <button js-backspace>⌫</button>
+        </section>
+
+        <section class="keyboard" js-keyboard></section>
+    </main>
+
+<script>
+
+const output = document.querySelector("[js-output]");
+const keyboard = document.querySelector("[js-keyboard]");
+const backspace = document.querySelector("[js-backspace]");
+
+const appendOutput = (text) => output.textContent += text;
+const decrementOutput = () => output.textContent = output.textContent.substring(0, output.textContent.length - 1);
+const copyOutput = () => navigator.clipboard.writeText(output.textContent);
+
+const runes = ["ᚠ", "ᚢ", "ᚦ", "ᚩ", "ᚱ", "ᚳ", "ᚷ", "ᚹ", "ᚻ", "ᚾ", "ᛁ", "ᛄ", "ᛈ", "ᛉ", "ᛋ", "ᛏ", "ᛒ", "ᛖ", "ᛗ", "ᛚ", "ᛝ", "ᛟ", "ᛞ", "ᚪ", "ᚫ", "ᛠ", "ᚣ",];
+
+for(const rune of runes){
+    element = document.createElement("button");
+    element.classList.add("keyboard__key");
+    element.innerHTML = rune;
+    
+    element.addEventListener("click", () => {
+        appendOutput(rune);
+        copyOutput();
+    });
+
+    keyboard.appendChild(element);
+}
+
+{
+    element = document.createElement("button");
+    element.classList.add("keyboard__key");
+    element.classList.add("keyboard__key--long");
+    element.innerHTML = '_';
+    
+    element.addEventListener("click", () => {
+        appendOutput('\ ');
+        copyOutput();
+    });
+
+    keyboard.appendChild(element);
+}
+
+backspace.addEventListener("click", () => decrementOutput());
+
+output.addEventListener("click", () => copyOutput());
+
+</script>
+
+</body>
+</html>
